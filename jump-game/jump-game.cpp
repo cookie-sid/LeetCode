@@ -10,8 +10,6 @@ public:
             cango = max(cango, nums[i]);
             if(i + cango >= nums.size() - 1)
                 return true;
-            
-            cout<<cango<<" ";
         }
         return false;
     }
