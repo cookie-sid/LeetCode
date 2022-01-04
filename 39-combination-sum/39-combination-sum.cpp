@@ -14,10 +14,14 @@ public:
                 recur(candidates,poss,ans,target-candidates[i]);
                 poss.pop_back();
             }
+            else {
+                return;
+            }
         }
     }
     
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        sort(candidates.begin(),candidates.end());
         vector<int> poss;
         set<vector<int>> ans;
         recur(candidates,poss,ans,target);
