@@ -19,6 +19,9 @@ public:
         if(taken[x][y] == true) {
             return false;
         }
+        if(word.substr(0,current.length() + 1)  != current + board[x][y]) {
+            return false;
+        }
         
         taken[x][y] = true;
         
