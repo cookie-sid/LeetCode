@@ -1,6 +1,9 @@
 class Solution {
 public:
     vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        
+        //O(n) time and O(1) space, given that the arrays are already sorted
+        
         sort(nums1.begin(),nums1.end());
         sort(nums2.begin(),nums2.end());
         
