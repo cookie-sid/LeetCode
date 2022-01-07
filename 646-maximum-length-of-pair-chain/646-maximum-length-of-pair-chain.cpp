@@ -2,27 +2,25 @@ class Solution {
 public:
     
     int findLongestChain(vector<vector<int>>& pairs) {
+        for(int i = 0; i < pairs.size(); i++)
+        {
+            int temp = pairs[i][0];
+            pairs[i][0] = pairs[i][1];
+            pairs[i][1] = temp;
+        }
         
         sort(pairs.begin(),pairs.end());
-        vector<int> count(pairs.size());
-        
-        count[pairs.size() - 1] = 1;
-        int maxi = 1;
-        for(int i = pairs.size() - 2; i >= 0; i--) {
-            cout<<pairs[i][0]<<" "<<pairs[i][1]<<endl;
-            int start = i;
-            while(start < pairs.size()) {
-                if(pairs[start][0] > pairs[i][1]) {
-                    count[i] = max(count[i],count[start] + 1);
-                    maxi = max(maxi,count[i]);
-                }
+        int count = 0;
+        for(int i = 0; i < pairs.size(); i++)
+        {
+            count++;
+            int start = i + 1;
+            while(start < pairs.size() and pairs[start][1] <= pairs[i][0] )
+            {
                 start++;
             }
-            if(count[i] == 0) {
-                count[i] = 1;
-            }
+            i = start - 1;
         }
-        return maxi;
-        
+        return count;
     }
 };
