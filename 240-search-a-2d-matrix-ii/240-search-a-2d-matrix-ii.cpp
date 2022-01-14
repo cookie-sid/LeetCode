@@ -1,15 +1,16 @@
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        for(int i = 0; i < matrix.size(); i++) {
-            if(matrix[i][0] > target) {
-                break;
+        int r = matrix.size() - 1;
+        int c = 0;
+        while(r >= 0 and c < matrix[0].size()) {
+            if(matrix[r][c] > target) {
+                r--;
             }
-            int upper = upper_bound(matrix[i].begin(),matrix[i].end(),target) - matrix[i].begin();
-            if(upper == 0) {
-                continue;
+            else if (matrix[r][c] < target) {
+                c++;
             }
-            if(target ==  matrix[i][upper - 1]) {
+            else {
                 return true;
             }
         }
