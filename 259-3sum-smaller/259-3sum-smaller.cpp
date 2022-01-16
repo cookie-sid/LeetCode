@@ -4,16 +4,19 @@ public:
         if(nums.size() < 3) {
             return 0;
         }
-        
         sort(nums.begin(),nums.end());
         
         int ans = 0;
         for(int i = 0; i < nums.size() - 2; i++) {
-            for(int j = i  + 1; j < nums.size() - 1; j++) {
-                int required = target - nums[i] - nums[j];
-                int upper = lower_bound(nums.begin() + j + 1,nums.end(),required) - nums.begin();
-                if(upper - 1 > j) {
-                    ans += upper - 1 - j;
+            int required = target - nums[i];
+            int start = i + 1, end = nums.size() - 1;
+            while(start < end) {
+                if(nums[start] + nums[end] < required) {
+                    ans += end - start;
+                    start++;
+                }
+                else {
+                    end--;
                 }
             }
         }
