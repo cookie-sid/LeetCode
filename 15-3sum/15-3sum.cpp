@@ -1,28 +1,30 @@
 class Solution {
 public:
+    
+    
     vector<vector<int>> threeSum(vector<int>& nums) {
-        if(nums.size() < 3)
+        
+        if(nums.size() < 3) {
             return {};
-        unordered_map<int,int> m;
-        vector<int> temp;
-        for(auto x : nums) {
-            if(m[x] == 0) {
-                temp.push_back(x);
-            }
-            m[x]++;
         }
-        sort(temp.begin(),temp.end());
+        sort(nums.begin(),nums.end());
+        map<int,int> m;
+        for(int i = 0; i < nums.size(); i++) {
+            m[nums[i]] = i + 1;
+        }
         vector<vector<int>> ans;
-        for(int i = 0; i < temp.size() - 2 and temp.size() > 2; i++) {
-            for(int j = i + 1; j < temp.size() - 1; j++) {
-                if(m[-(temp[i] + temp[j])] != 0 and -(temp[i] + temp[j]) > temp[j])
-                    ans.push_back({temp[i],temp[j],-(temp[i] + temp[j])});
+        for(int i = 0; i < nums.size() - 1; i++) {
+            for(int j = i + 1; j < nums.size(); j++) {
+                if(m[-nums[i]-nums[j]] > j + 1) {
+                    ans.push_back({nums[i],nums[j],-nums[i]-nums[j]});
+                }
+                while(j < nums.size() - 1 and nums[j] == nums[j+1]) {
+                    j++;
+                }
             }
-        }
-        for(auto x : temp)
-        {
-            if((x==0 and m[x]>2)  or (m[x] > 1 and m[-2*x] > 0 and x != 0))
-                ans.push_back({x,x,-2*x});
+            while(i < nums.size() - 2 and nums[i] == nums[i+1]) {
+                i++;
+            }
         }
         return ans;
     }
