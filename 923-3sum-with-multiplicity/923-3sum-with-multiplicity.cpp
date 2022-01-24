@@ -42,6 +42,7 @@ public:
                     }
                     high--;
                     ans += (low - curr_l)*(curr_h - high);
+                    ans %= mod;
                 }
             }
             
