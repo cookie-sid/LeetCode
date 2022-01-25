@@ -30,7 +30,7 @@ public:
                 }
                 start++;
             }
-            cout<<maxi_boost<<" "<<start<<" "<<index<<endl;
+            // cout<<maxi_boost<<" "<<start<<" "<<index<<endl;
             if(index == -1) {
                 return -1;
             }
