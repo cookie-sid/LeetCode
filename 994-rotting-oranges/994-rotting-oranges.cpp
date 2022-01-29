@@ -1,47 +1,51 @@
 class Solution {
 public:
+    
     int orangesRotting(vector<vector<int>>& grid) {
-        int turns = 0, n = grid.size(), m = grid[0].size();
-        while(true) {
-            bool any_change = false;
-            vector<vector<int>> temp(n,vector<int>(m,0));
-            for(int i = 0; i < grid.size(); i++) {
-                for(int j = 0; j < grid[0].size(); j++) {
-                    temp[i][j] = grid[i][j];
+        queue<pair<int,int>> q;
+        int n = grid.size(), m = grid[0].size();
+        for(int i = 0; i < grid.size(); i++) {
+            for(int j = 0; j < grid[0].size(); j++) {
+                if(grid[i][j] == 2) {
+                    q.push(make_pair(i,j));
                 }
             }
-            for(int i = 0; i < grid.size(); i++) {
-                for(int j = 0; j < grid[i].size(); j++) {
-                    if(grid[i][j] == 2) {
-                        if(grid[max(i-1,0)][j] == 1) {
-                            temp[max(i-1,0)][j] = 2;
-                            any_change = true;
-                        }
-                        if(grid[min(i+1,n - 1)][j] == 1) {
-                            temp[min(i+1,n - 1)][j] = 2;
-                            any_change = true;
-                        }
-                        if(grid[i][min(j + 1,m - 1)] == 1) {
-                            temp[i][min(j + 1,m - 1)] = 2;
-                            any_change = true;
-                        }
-                        if(grid[i][max(j-1,0)] == 1) {
-                            temp[i][max(j-1,0)] = 2;
-                            any_change = true;
-                        }
-                    }
+        }
+        
+        int curr_size = q.size(), popped_out = 0, turns = 0;
+        while(!q.empty()) {
+            pair<int,int> top_pair = q.front();
+            int x = top_pair.first, y = top_pair.second;
+            if(x + 1 <= n - 1 and x + 1 >= 0 and y >= 0 and y <= m - 1) {
+                if(grid[x + 1][y] == 1) {
+                    grid[x + 1][y] = 2;
+                    q.push(make_pair(x + 1,y));
                 }
             }
-            for(int i = 0; i < grid.size(); i++) {
-                for(int j = 0; j < grid[0].size(); j++) {
-                    grid[i][j] = temp[i][j];
+            if(x - 1 <= n - 1 and x - 1 >= 0 and y >= 0 and y <= m - 1) {
+                if(grid[x - 1][y] == 1) {
+                    grid[x - 1][y] = 2;
+                    q.push(make_pair(x - 1,y));
                 }
             }
-            if(any_change){
+            if(x <= n - 1 and x >= 0 and y + 1 >= 0 and y + 1 <= m - 1) {
+                if(grid[x][y + 1] == 1) {
+                    grid[x][y + 1] = 2;
+                    q.push(make_pair(x,y + 1));
+                }
+            }
+            if(x <= n - 1 and x >= 0 and y - 1 >= 0 and y - 1 <= m - 1) {
+                if(grid[x][y - 1] == 1) {
+                    grid[x][y - 1] = 2;
+                    q.push(make_pair(x,y - 1));
+                }
+            }
+            q.pop();
+            popped_out++;
+            if(popped_out == curr_size) {
+                popped_out = 0;
+                curr_size = q.size();
                 turns++;
-            }
-            else {
-                break;
             }
         }
         for(auto x : grid) {
@@ -51,6 +55,6 @@ public:
                 }
             }
         }
-        return turns;
+        return turns == 0 ? 0 : turns - 1;
     }
 };
