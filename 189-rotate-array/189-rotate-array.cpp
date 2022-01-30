@@ -2,30 +2,34 @@ class Solution {
 public:
     void rotate(vector<int>& nums, int k) {
         
+        int n = nums.size();
         
-        k = k % nums.size();
+        k %= n;
         
-        if(nums.size() == 1 or k == 0)
+        if(n == 1 or k == 0) {
             return;
-        
-        int temp = nums[0], next = k, start = 0;
-        int count = 0;
-        while(true) {
-            count++;
-            int temp2 = nums[next];
-            nums[next] = temp;
-            temp = temp2;
-            next = (next + k)%nums.size();
-            if(next == (start + k)%nums.size()) {
-                start++;
-                next = (start + k)%nums.size();
-                temp = nums[start];
-            }
-            if(count == nums.size()) {
-                break;
-            }
-
         }
         
+        int current = nums[0], next = k, swapsDone = 0, currentIndex = 0;
+        while(swapsDone < n and currentIndex < k) {
+            int elementToBePlaced = -1;
+            while(next != currentIndex) {
+                elementToBePlaced = nums[next];
+                nums[next] = current;
+                current = elementToBePlaced;
+                next += k;
+                next %= n;
+                swapsDone++;
+                if(swapsDone == n) {
+                    return;
+                } 
+            }
+            nums[next] = current;
+            swapsDone++;
+            current = nums[currentIndex + 1];
+            currentIndex += 1;
+            next = currentIndex + k;
+            next %= n;
+        }
     }
 };
