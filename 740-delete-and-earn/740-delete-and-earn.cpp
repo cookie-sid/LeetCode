@@ -7,18 +7,22 @@ public:
             freq[x]++;
         }
         
-        vector<vector<int>> dp(10001, vector<int> (2,0));
+        int avoid = 0, use = 0, prev = -1;
         for(int i = 1; i < 10001; i++) {
-            if(freq[i] == 0) {
-                dp[i][0] = max(dp[i-1][0],dp[i-1][1]);
-                dp[i][1] = max(dp[i-1][0],dp[i-1][1]);
-            }
-            else {
-                dp[i][0] = max(dp[i-1][0],dp[i-1][1]);
-                dp[i][1] = max(dp[i-1][0] + i * freq[i],dp[i-1][1]);
+            if(freq[i] != 0) {
+                int m = max(avoid,use);
+                if(i - 1 != prev) {
+                    use = i * freq[i] + m;
+                    avoid = m;
+                }
+                else {
+                    use = i * freq[i] + avoid;
+                    avoid = m;
+                }
+                prev = i;
             }
         }
-        return max(dp[10000][0],dp[10000][1]);
+        return max(avoid,use);
         
     }
 };
