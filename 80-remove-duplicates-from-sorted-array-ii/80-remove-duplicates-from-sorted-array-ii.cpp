@@ -1,33 +1,40 @@
 class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
-        int start = 0, freq = 0;
+        
+        int first = 0, prev = 0, count = 0;
+        
         for(int i = 0; i < nums.size(); i++) {
             if(i == 0) {
-                start++;
-                freq++;
-                continue;
+                count++;
+                first++;
+                prev = nums[i];
             }
             else {
-                if(nums[i] == nums[start - 1]) {
-                    if(freq == 2) {
+                if(nums[i] == prev) {
+                    if(count == 2) {
                         continue;
                     }
                     else {
-                        freq++;
-                        nums[start] = nums[i];
-                        start++;
-                        continue;
+                        int temp = nums[i];
+                        nums[i] = nums[first];
+                        nums[first] = temp;
+                        first++;
+                        count++;
                     }
                 }
                 else {
-                    freq = 1;
-                    nums[start] = nums[i];
-                    start++;
-                    continue;
+                    prev = nums[i];
+                    int temp = nums[i];
+                    nums[i] = nums[first];
+                    nums[first] = temp;
+                    first++;
+                    count = 1;
                 }
             }
         }
-        return start;
+        
+        return first;
+        
     }
 };
