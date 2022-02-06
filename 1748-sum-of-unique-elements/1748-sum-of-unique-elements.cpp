@@ -5,10 +5,14 @@ public:
         int sum = 0;
         for(auto x : nums) {
             count[x]++;
+            if(count[x] == 1) {
+                sum += x;
+            }
+            else if (count[x] == 2){
+                sum -= x;
+            }
         }
-        for(int i = 1; i < 101; i++) {
-            sum += count[i] == 1 ? i : 0;
-        }
+
         return sum;
     }
 };
