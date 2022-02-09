@@ -1,23 +1,15 @@
 class Solution {
 public:
     int findPairs(vector<int>& nums, int k) {
-        unordered_map<int,int> m;
+        sort(nums.begin(),nums.end());
         int count = 0;
-        for(auto x : nums) {
-            if(k == 0) {
-                if(m[x] == 1) {
-                    count++;
-                }
+        for(int i = 0; i < nums.size(); i++) {
+            int upper = upper_bound(nums.begin() + i + 1, nums.end(), nums[i] + k) - nums.begin();
+            if(nums[upper - 1] == nums[i] + k and upper != i + 1) {
+                count++;
             }
-            else {
-                if(m[x] == 0){
-                    if(m[x - k] != 0) 
-                        count++;
-                    if(m[x + k] != 0)
-                        count++;
-                }
-            }
-            m[x]++;
+            while(i < nums.size() - 1 and nums[i + 1] == nums[i])
+                i++;
         }
         return count;
     }
