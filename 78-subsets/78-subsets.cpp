@@ -1,27 +1,22 @@
 class Solution {
 public:
     
-    
-    void subs(vector<vector<int>> &ans, int k, int n, vector<int> &nums, vector<int> &curr) {
-        if(k == n) {
+    void helper(vector<vector<int>> &ans, vector<int>& nums, int start, vector<int> &curr) {
+        if(start == nums.size())
             ans.push_back(curr);
-            return;
+        else {
+            helper(ans,nums,start+1,curr);
+            curr.push_back(nums[start]);
+            helper(ans,nums,start+1,curr);
+            curr.pop_back();
         }
-        subs(ans,k+1,n,nums,curr);
-        curr.push_back(nums[k]);
-        subs(ans,k+1,n,nums,curr);
-        curr.pop_back();
-        
     }
     
     vector<vector<int>> subsets(vector<int>& nums) {
-        
         vector<vector<int>> ans;
         vector<int> curr;
-        
-        subs(ans,0,nums.size(),nums,curr);
-        
+        int start = 0;
+        helper(ans,nums,start,curr);
         return ans;
-        
     }
 };
