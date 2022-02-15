@@ -12,17 +12,17 @@ public:
 class Solution {
 public:
     Node* lowestCommonAncestor(Node* p, Node * q) {
-        set<Node*> s;
-        s.insert(p);
+        unordered_map<Node*,int> m;
+        m[p] = 1;
         while(p -> parent != NULL) {
-            s.insert(p);
+            m[p->parent] = 1;
             p = p -> parent;
         }
-        if(s.count(q) == 1) {
+        if(m[q] == 1) {
             return q;
         }
         while(q -> parent != NULL) {
-            if(s.count(q -> parent) == 1) {
+            if(m[q -> parent] == 1) {
                 return q -> parent;
             }
             q = q-> parent;
