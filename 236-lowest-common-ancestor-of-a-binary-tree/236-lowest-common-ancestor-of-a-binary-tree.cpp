@@ -41,14 +41,11 @@ public:
         found = false;
         dfs(pathQ,root,q,found);
         pathQ.push_back(q);
-        unordered_map<TreeNode*,int> pnodes;
-        for(auto x : pathP) {
-            pnodes[x] = 1;
-        }
+        sort(pathP.begin(),pathP.end());
+        
         for(int j = (int) pathQ.size() - 1; j >= 0; j --) {
-            if(pnodes[pathQ[j]] == 1) {
+            if(binary_search(pathP.begin(),pathP.end(),pathQ[j]))
                 return pathQ[j];
-            }
         }
         return root;
         
