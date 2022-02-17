@@ -1,35 +1,34 @@
 class Solution {
 public:
     
-    void recur(vector<int>& candidates, vector<int>& poss, set<vector<int>> &ans, int target) {
-        if(target == 0) {
-            vector<int> temp = poss;
+    void recur(int currtotal, int &total, vector<int> & candidates, set<vector<int>>&ans, vector<int>& current) {
+        if(currtotal == total) {
+            vector<int> temp = current;
             sort(temp.begin(),temp.end());
             ans.insert(temp);
             return;
         }
-        for(int i = 0; i < candidates.size(); i++) {
-            if(target - candidates[i] >= 0) {
-                poss.push_back(candidates[i]);
-                recur(candidates,poss,ans,target-candidates[i]);
-                poss.pop_back();
-            }
-            else {
-                return;
-            }
+        if(currtotal > total) {
+            return;
+        }
+        
+        for(auto x : candidates) {
+            current.push_back(x);
+            recur(currtotal + x,total,candidates,ans,current);
+            current.pop_back();
         }
     }
     
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        sort(candidates.begin(),candidates.end());
-        vector<int> poss;
-        set<vector<int>> ans;
-        recur(candidates,poss,ans,target);
-        vector<vector<int>> res;
-        for(auto x : ans)
-            res.push_back(x);
         
+        vector<vector<int>> res;
+        set<vector<int>> ans;
+        vector<int> current;
+        recur(0,target,candidates,ans,current);
+        for(auto x : ans) {
+            res.push_back(x);
+        }
         return res;
-            
+        
     }
 };
