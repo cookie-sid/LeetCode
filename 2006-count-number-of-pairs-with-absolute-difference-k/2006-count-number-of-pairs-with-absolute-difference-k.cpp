@@ -1,7 +1,7 @@
 class Solution {
 public:
     int countKDifference(vector<int>& nums, int k) {
-        vector<int> count(101);
+        unordered_map<int,int> count;
         int ans = 0;
         for(auto x : nums) {
             if (x - k >= 0)
