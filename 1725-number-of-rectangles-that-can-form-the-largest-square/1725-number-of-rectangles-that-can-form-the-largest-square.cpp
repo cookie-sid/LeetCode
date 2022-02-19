@@ -1,25 +1,20 @@
 class Solution {
 public:
     int countGoodRectangles(vector<vector<int>>& rectangles) {
-        
-        int count = 1;
-        int current = -1;
-        int mini = -1;
-        for(auto x : rectangles) {
-            mini = min(x[0],x[1]);
-            if(mini > current) {
-                count = 1;
-                current = mini;
+        vector<int> squares;
+        int count = 0;
+        for (int i = 0; i < rectangles.size(); i++) {
+            int minim = INT_MAX;
+            for (int j = 0; j < 2; j++) {
+                minim = min(minim, rectangles[i][j]);
             }
-            else if(mini == current) {
+            squares.push_back(minim);
+        }
+        int maxi = *max_element(squares.begin(), squares.end());
+        for (auto x : squares) {
+            if (x == maxi)
                 count++;
-            }
-            else {
-                continue;
-            }
-            current = max(current,mini);
         }
         return count;
-        
     }
 };
