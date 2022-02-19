@@ -1,20 +1,12 @@
 class Solution {
 public:
     int countGoodRectangles(vector<vector<int>>& rectangles) {
-        vector<int> squares;
-        int count = 0;
-        for (int i = 0; i < rectangles.size(); i++) {
-            int minim = INT_MAX;
-            for (int j = 0; j < 2; j++) {
-                minim = min(minim, rectangles[i][j]);
-            }
-            squares.push_back(minim);
+        int c=0,cou=0;
+        for(auto i:rectangles)
+        {int t= min(i[0],i[1]); // min among the l and w
+        if(t>c)cou=1,c= t; // if found a greater square then made the counter 1
+        else if( t==c)cou++; // if found the same square then increased the counter
         }
-        int maxi = *max_element(squares.begin(), squares.end());
-        for (auto x : squares) {
-            if (x == maxi)
-                count++;
-        }
-        return count;
+        return cou;
     }
 };
