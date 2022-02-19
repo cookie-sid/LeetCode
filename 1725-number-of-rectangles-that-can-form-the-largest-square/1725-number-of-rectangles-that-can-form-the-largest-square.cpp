@@ -4,8 +4,9 @@ public:
         
         int count = 1;
         int current = -1;
+        int mini = -1;
         for(auto x : rectangles) {
-            int mini = min(x[0],x[1]);
+            mini = min(x[0],x[1]);
             if(mini > current) {
                 count = 1;
                 current = mini;
