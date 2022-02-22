@@ -31,17 +31,14 @@ public:
             else {
                 
                 int id = st.top().first, starttime = st.top().second;
-                int total = 0;
+                int currenttime = stoi(tmp[2]) - starttime + 1;
+                ans[stoi(tmp[0])] += currenttime;
+                st.pop();
                 
-                for(auto y : m) {
-                    if(y.first > starttime)
-                        total += y.second;
+                if(!st.empty()){
+                    ans[st.top().first] -= currenttime;
                 }
                 
-                int currenttime = stoi(tmp[2]) - starttime + 1 - total;
-                ans[stoi(tmp[0])] += currenttime;
-                m[starttime] = currenttime;
-                st.pop();
             }
         }
         return ans;
