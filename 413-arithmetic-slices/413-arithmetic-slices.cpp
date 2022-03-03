@@ -1,23 +1,25 @@
 class Solution {
 public:
     int numberOfArithmeticSlices(vector<int>& nums) {
-        int ans = 0;
-        for(int i = 2; i <nums.size(); i++) {
-            int diff = nums[i] - nums[i-1];
-            int currans = 0;
-            if(nums[i-1] - nums[i-2] == diff) {
-                currans++;
-            }
-            else {
+        
+        int prevdiff = -1e9, countsince = 0, ans = 0;
+        for(int i = 1; i < nums.size(); i++) {
+            if(prevdiff == -1e9) {
+                prevdiff = nums[i] - nums[i-1];
+                countsince++;
                 continue;
             }
-            int counter = i - 2;
-            while(counter > 0 and nums[counter] - nums[counter - 1] == diff) {
-                currans++;
-                counter--;
+            if(nums[i] - nums[i-1] == prevdiff) {
+                countsince++;
             }
-            ans += currans;
+            else {
+                ans += (countsince + 2) * (countsince - 1) - (countsince + 1)*(countsince + 2)/2 + 3;
+                countsince = 1;
+                prevdiff = nums[i] - nums[i-1];
+            }
         }
+        if(countsince > 0)
+            ans += (countsince + 2) * (countsince - 1) - (countsince + 1)*(countsince + 2)/2 + 3;
         return ans;
     }
 };
