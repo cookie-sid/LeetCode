@@ -2,27 +2,31 @@ class Solution {
 public:
     int deleteAndEarn(vector<int>& nums) {
         
-        vector<int> freq(10001);
+        vector<int> count(10001);
         for(auto x : nums) {
-            freq[x]++;
+            count[x]++;
         }
         
-        int avoid = 0, use = 0, prev = -1;
-        for(int i = 1; i < 10001; i++) {
-            if(freq[i] != 0) {
-                int m = max(avoid,use);
-                if(i - 1 != prev) {
-                    use = i * freq[i] + m;
-                    avoid = m;
-                }
-                else {
-                    use = i * freq[i] + avoid;
-                    avoid = m;
-                }
-                prev = i;
+        int notUsedLast = 0, usedLast = 0;
+        usedLast = count[1];
+        for(int i = 2; i < 10001; i++) {
+            
+            
+            if(count[i] == 0) {
+                int temp = max(notUsedLast, usedLast);
+                usedLast = temp;
+                notUsedLast = temp;
+                continue;
             }
+            
+            int currUsed = notUsedLast + count[i]*i;
+            int currNotUsed = max(usedLast,notUsedLast);
+            
+            usedLast = currUsed;
+            notUsedLast = currNotUsed;
         }
-        return max(avoid,use);
+        
+        return max(usedLast, notUsedLast);
         
     }
 };
