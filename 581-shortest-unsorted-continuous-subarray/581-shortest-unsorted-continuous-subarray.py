@@ -25,7 +25,6 @@ class Solution:
         if(index == None):
             return 0
         
-#         print(str(first) + " " + str(index))
         last = index
         for i in range(index + 1, n):
             if(nums[i] < maxi) :
