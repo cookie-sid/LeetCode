@@ -18,10 +18,8 @@ public:
         while(!stk.empty()) {
             auto top = stk.top();
             stk.pop();
-            char c = top.first;
-            int howMany = top.second;
-            for(int i = 0; i < howMany; i++) {
-                ans += c;
+            for(int i = 0; i < top.second; i++) {
+                ans += top.first;
             }
         }
         
