@@ -4,20 +4,12 @@ public:
         stack<pair<char,int>> stk;
         
         for(char c : s) {
-            if(stk.empty()) {
+            if(stk.empty() or stk.top().first != c) {
                 stk.push({c, 1});
             } else {
-                auto top = stk.top();
-                char prev = top.first;
-                int streak = top.second;
-                if(prev == c) {
+                stk.top().second += 1;
+                if(stk.top().second == k) {
                     stk.pop();
-                    int newStreak = streak + 1;
-                    if(newStreak < k) {
-                        stk.push({c, newStreak});
-                    }
-                } else {
-                    stk.push({c, 1});
                 }
             }
         }
