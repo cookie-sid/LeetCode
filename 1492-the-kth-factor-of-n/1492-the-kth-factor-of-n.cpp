@@ -15,9 +15,6 @@ public:
                 total += 1;
             }
         }
-        for(auto x: facs) {
-            cout<<x<<" ";
-        }
         if(total < k) {
             return -1;
         }
