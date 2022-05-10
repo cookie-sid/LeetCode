@@ -11,7 +11,6 @@ public:
             //     checker.insert(x);
             // }
             vector<int> temp = curr_arr;
-            sort(temp.begin(),temp.end());
             ans.insert(curr_arr);
             return;
         }
