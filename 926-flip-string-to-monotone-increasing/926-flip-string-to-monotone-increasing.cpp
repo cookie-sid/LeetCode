@@ -2,23 +2,22 @@ class Solution {
 public:
     int minFlipsMonoIncr(string s) {
         int n = s.length();
-        vector<int> endsInOne(n), endsInZero(n);
+        int prevEndsInOne = 0, prevEndsInZero = 0;
         if(s[0] == '0') {
-            endsInOne[0] = 1;
+            prevEndsInOne = 1;
         }
         else {
-            endsInZero[0] = 1;
+            prevEndsInZero = 1;
         }
         for(int i = 1; i < n; i++) {
             if(s[i] == '0') {
-                endsInOne[i] = min(endsInOne[i-1], endsInZero[i-1]) + 1;
-                endsInZero[i] = endsInZero[i-1];
+                prevEndsInOne = min(prevEndsInOne, prevEndsInZero) + 1;
             }
             else {
-                endsInOne[i] = min(endsInOne[i-1], endsInZero[i-1]);
-                endsInZero[i] = endsInZero[i-1] + 1;
+                prevEndsInOne = min(prevEndsInOne, prevEndsInZero);
+                prevEndsInZero = prevEndsInZero + 1;
             }
         }
-        return min(endsInOne[n-1], endsInZero[n-1]);
+        return min(prevEndsInOne, prevEndsInZero);
     }
 };
