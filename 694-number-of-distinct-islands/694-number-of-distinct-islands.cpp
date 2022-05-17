@@ -21,28 +21,36 @@ public:
         int n = grid[0].size();
         vector<vector<bool>> vis(m, vector<bool> (n));
         map<int,vector<vector<pair<int,int>>>> mp;
+        
         for(int i = 0; i < m; i++) {
             for(int j = 0; j < n; j++) {
+                
                 if(vis[i][j] or grid[i][j] == 0)
                     continue;
+                
                 vector<pair<int,int>> mems;
                 recur(grid,vis,i,j,m,n,mems);
                 bool sameIslandPresent = false;
+                
                 for(auto x : mp[mems.size()]) {
+                    
                     bool allDiffSame = true;
+                    
                     for(int i = 1; i < x.size(); i++) {
+                        
                         if(!(mems[i].first - mems[i-1].first == x[i].first - x[i-1].first 
                            and mems[i].second - mems[i-1].second == x[i].second - x[i-1].second)) {
                             allDiffSame = false;
                             break;
                         }
                     }
+                    
                     if(allDiffSame) {
                         sameIslandPresent = true;
                         break;
                     }
                 }
-                if(!sameIslandPresent and mems.size() > 0) {
+                if(!sameIslandPresent) {
                     mp[mems.size()].push_back(mems);
                 }
             }
