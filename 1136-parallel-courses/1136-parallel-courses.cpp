@@ -18,6 +18,7 @@ public:
         for(auto x : preForThis[a]) {
             ans = max(ans, 1 + recurr(x,preForThis,recStack,m));
         }
+        recStack[a] = false;
         m[a] = ans;
         return ans;
     }
