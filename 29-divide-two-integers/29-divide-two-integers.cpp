@@ -21,41 +21,32 @@ int divide(int dividend, int divisor) {
         divisor = -divisor;
     }
 
-    std::vector<int> doubles;
-    std::vector<int> powersOfTwo;
-
-    /* Nothing too exciting here, we're just making a list of doubles of 1 and
-     * the divisor. This is pretty much the same as Approach 2, except we're
-     * actually storing the values this time. */
-    int powerOfTwo = -1;
-    while (divisor >= dividend) {
-        doubles.push_back(divisor);
-        powersOfTwo.push_back(powerOfTwo);
-        // Prevent needless overflows from occurring...
-        if (divisor < HALF_INT_MIN) {
-            break;
-        }
-        divisor += divisor;
-        powerOfTwo += powerOfTwo;
-    }
-
     int quotient = 0;
-    /* Go from largest double to smallest, checking if the current double fits.
-     * into the remainder of the dividend */
-    for (int i = doubles.size() - 1; i >= 0; i--) {
-        if (doubles[i] >= dividend) {
-            // If it does fit, add the current powerOfTwo to the quotient.
-            quotient += powersOfTwo[i];
-            // Update dividend to take into account the bit we've now removed.
-            dividend -= doubles[i];
+    /* Once the divisor is bigger than the current dividend,
+     * we can't fit any more copies of the divisor into it. */
+    while (divisor >= dividend) {
+        /* We know it'll fit at least once as divivend >= divisor.
+         * Note: We use a negative powerOfTwo as it's possible we might have
+         * the case divide(INT_MIN, -1). */
+        int powerOfTwo = -1;
+        int value = divisor;
+        /* Check if double the current value is too big. If not, continue doubling.
+        * If it is too big, stop doubling and continue with the next step */
+        while (value >= HALF_INT_MIN && value + value >= dividend) {
+            value += value;
+            powerOfTwo += powerOfTwo;
         }
+        // We have been able to subtract divisor another powerOfTwo times.
+        quotient += powerOfTwo;
+        // Remove value so far so that we can continue the process with remainder.
+        dividend -= value;
     }
 
     /* If there was originally one negative sign, then
      * the quotient remains negative. Otherwise, switch
      * it to positive. */
     if (negatives != 1) {
-        return -quotient;
+        quotient = -quotient;
     }
     return quotient;
 }
