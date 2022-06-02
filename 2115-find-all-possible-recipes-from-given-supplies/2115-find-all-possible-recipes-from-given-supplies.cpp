@@ -2,7 +2,7 @@ class Solution {
 public:
     
     
-    bool ds(string s, map<string,vector<string>> &m, map<string,bool> &supply, map<string,bool> &canBeMade) {
+    bool ds(string s, map<string,vector<string>> &m, unordered_map<string,bool> &supply, unordered_map<string,bool> &canBeMade) {
         if(canBeMade[s])
             return true;
         if(m.find(s) == m.end() and !supply[s]) {
@@ -34,11 +34,11 @@ public:
                 m[recipes[i]].push_back(ingredients[i][j]);
             }
         }
-        map<string,bool> supply;
+        unordered_map<string,bool> supply;
         for(auto x : supplies) {
             supply[x] = true;
         }
-        map<string,bool> canBeMade;
+        unordered_map<string,bool> canBeMade;
         for(auto x : recipes) {
             if(ds(x,m,supply,canBeMade))
                 ans.push_back(x);
