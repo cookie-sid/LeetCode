@@ -12,7 +12,7 @@
 class Solution {
 public:
     
-    void getPath(TreeNode* root, int val, vector<TreeNode*> &path) {
+    void getPath(TreeNode* root, int &val, vector<TreeNode*> &path) {
         path.push_back(root);
         if(root -> val == val) {
             return;
