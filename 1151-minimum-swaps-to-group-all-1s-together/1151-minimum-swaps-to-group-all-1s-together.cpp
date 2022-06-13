@@ -1,32 +1,27 @@
 class Solution {
 public:
     int minSwaps(vector<int>& data) {
-        int totalOnes = 0;
-        for(auto x : data) {
-            if(x == 0)
-                continue;
-            totalOnes += 1;
+        int n = data.size();
+        int totalones = 0;
+        for(int i = 0; i < n; i++) {
+            if(data[i] == 1)
+                totalones++;
         }
         
-        int ans = 1e9;
-        int zerosInThisWindow = 0;
-        for(int i = 0; i < totalOnes; i++) {
-            if(data[i] == 0) {
-                zerosInThisWindow += 1;
-            }
+        int ans = 1e9, countzeros = 0;
+        for(int i = 0; i < totalones; i++) {
+            if(data[i] == 0)
+                countzeros++;
         }
-        
-        ans = min(ans,zerosInThisWindow);
-        for(int i = 1; i < data.size() - totalOnes + 1; i++) {
-            if(data[i-1] == 0) {
-                zerosInThisWindow -= 1;
-            }
-            if(data[i-1+totalOnes] == 0) {
-                zerosInThisWindow += 1;
-            }
-            ans = min(ans,zerosInThisWindow);
+        ans = min(ans,countzeros);
+        for(int i = 1; i <= n - totalones; i++) {
+            if(data[i + totalones - 1] == 0)
+                countzeros++;
+            if(data[i - 1] == 0)
+                countzeros--;
+            
+            ans = min(ans,countzeros);
         }
         return ans;
-        
     }
 };
