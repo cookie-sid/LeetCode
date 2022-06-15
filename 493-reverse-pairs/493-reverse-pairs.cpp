@@ -14,22 +14,15 @@ public:
     void merge(vector<int> &nums, int start, int mid, int end, int &ans) {
         int lstart = start, rstart = mid + 1, len = end - start + 1, ctr = 0;
         vector<int> temp(len);
-        vector<long long> nums2(len), temp2(len);
-        int tmp = lstart;
-        for(int i = 0; i < len; i++) {
-            if(tmp >= rstart)
-                nums2[i] = 2*(long long)nums[tmp++];
-            else
-                nums2[i] = nums[tmp++];
-        }
-        int tmpL = lstart - lstart, tmpR = rstart - lstart, tmpE = end - lstart, tmpM = tmpR - 1, tctr = 0;
+        vector<long long> temp2(len);
+        int tmpL = lstart, tmpR = rstart, tmpE = end, tmpM = tmpR - 1, tctr = 0;
         while(tmpL <= tmpM and tmpR <= tmpE) {
-            if(nums2[tmpL] > nums2[tmpR]) {
+            if(nums[tmpL] > 2 * (long long)nums[tmpR]) {
                 ans += tmpE - tmpR + 1;
-                temp2[tctr++] = nums2[tmpL++];
+                temp2[tctr++] = nums[tmpL++];
             }
             else {
-                temp2[tctr++] = nums2[tmpR++];
+                temp2[tctr++] = nums[tmpR++];
             }
         }
         while(lstart <= mid and rstart <= end) {
