@@ -1,58 +1,54 @@
 class Solution {
 public:
     
-    bool checker(string a, string b) {
-        bool ans = true, incorrect = false;
-        int j = 0;
-        for(int i = 0; i < b.length(); i++) {
-            if(incorrect and a[j] != b[i]) {
+    bool check(string word1, string word2) {
+        int start = 0;
+        bool first = false;
+        for(int i = 0; i < word2.length(); i++) {
+            if(first and word2[i] != word1[start]) {
                 return false;
             }
-            if(a[j] != b[i]) {
-                j++;
+            if(word2[i] != word1[start]) {
                 i--;
-                incorrect = true;
+                first = true;
             }
-            else {
-                j++;
-            }
+            start++;
         }
-        return ans;
+        return true;
     }
     
-    int getLongest(string s, map<int,vector<string>> &m, int len, map<string,int> &dp) {
-        if(dp[s] >= 1) {
-            return dp[s];
+    int getLongest(string word, unordered_map<string, int> &ans, vector<vector<string>> &words) {
+        if(ans.find(word) != ans.end()) {
+            return ans[word];
         }
+        int len = word.length();
         if(len == 1) {
-            dp[s] = 1;
-            return 1;
+            ans[word] = 1;
+            return ans[word];
         }
-        int ans = 1;
-        for(auto x : m[len - 1]) {
-            if(checker(s,x)) {
-                ans = max(ans,1 + getLongest(x,m,len - 1,dp));
+        ans[word] = 1;
+        for(int i = 0; i < words[len - 1].size(); i++) {
+            if(ans.find(words[len-1][i]) == ans.end()) {
+                getLongest(words[len-1][i], ans, words);
             }
+            if(!check(word,words[len-1][i])) {
+                continue;
+            }
+            ans[word] = max(ans[word], 1 + ans[words[len-1][i]]);
         }
-        dp[s] = ans;
-        return ans;
+        return ans[word];
     }
     
     int longestStrChain(vector<string>& words) {
-        map<int,vector<string>> m;
+        vector<vector<string>> v(17);
         for(auto x : words) {
-            m[x.length()].push_back(x);
+            v[x.length()].push_back(x);
         }
-        map<string,int> dp;
-        int ans = 1;
+        unordered_map<string, int> ans;
+        int res = 1;
         for(auto x : words) {
-            if(dp[x] == 0) {
-                ans = max(ans,getLongest(x,m,x.length(),dp));
-            }
-            else {
-                ans = max(ans,dp[x]);
-            }
+            res = max(res,getLongest(x,ans,v));
         }
-        return ans;
+        return res;
     }
 };
