@@ -10,26 +10,36 @@ public:
     }
     
     string longestPalindrome(string s) {
-        unordered_map<char,vector<int>> m;
-        int n = s.length();
         string ans = "";
         ans += s[0];
-        for(int i = 0; i < n; i++) {
-            if(m[s[i]].size() == 0) {
-                m[s[i]].push_back(i);
+        int finall = 0, finalr = 0;
+        for(int i = 1; i < s.length(); i++) {
+            int l = i - 1, r = i + 1;
+            while(l >= 0 and s[l] == s[r]) {
+                l--;
+                r++;
             }
-            else {
-                for(int j = 0; j < m[s[i]].size(); j++) {
-                    if(checkPalin(s.substr(m[s[i]][j], i - m[s[i]][j] + 1),i - m[s[i]][j] + 1)) {
-                        if(ans.length() < i - m[s[i]][j] + 1) {
-                            ans = s.substr(m[s[i]][j],i - m[s[i]][j] + 1);
-                            break;
-                        }
-                    }
-                }
-                m[s[i]].push_back(i);
+            l++;
+            r--;
+            if(r - l + 1 > finalr - finall + 1) {
+                finalr = r;
+                finall = l;
+            }
+            l = i - 1;
+            r = i;
+            while(l >= 0 and s[l] == s[r]) {
+                l--;
+                r++;
+            }
+            l++;
+            r--;
+            if(r - l + 1 > finalr - finall + 1) {
+                finalr = r;
+                finall = l;
             }
         }
+        ans = s.substr(finall,finalr - finall + 1);
         return ans;
+        
     }
 };
