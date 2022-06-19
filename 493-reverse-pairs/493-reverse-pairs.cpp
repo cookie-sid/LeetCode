@@ -19,11 +19,11 @@ public:
             if(nums[tmpL] > 2 * (long long)nums[tmpR]) {
                 ans += tmpE - tmpR + 1;
                 tctr++;
-                nums[tmpL++];
+                tmpL++;
             }
             else {
                 tctr++;
-                nums[tmpR++];
+                tmpR++;
             }
         }
         while(lstart <= mid and rstart <= end) {
