@@ -1,56 +1,23 @@
 class Solution {
 public:
     vector<vector<string>> suggestedProducts(vector<string>& products, string searchWord) {
-        
-        sort(products.begin(),products.end());
-        vector<vector<string>> ans;
-        
-        for(int i = 0; i < searchWord.length(); i++) {
-            string curr = searchWord.substr(0,i + 1);
-            int low = 0, high = products.size() - 1;
-            vector<string> tempAns;
-            while(low <= high) {
-                int mid = (low + high)/2;
-                string current = products[mid].substr(0,i + 1);
-                if(current > curr) {
-                    high = mid - 1;
-                }
-                else if(current < curr) {
-                    low = mid + 1;
-                }
-                else {
-                    if(mid == 0) {
-                        int k = 0, count = 0;
-                        while(k < products.size() and count < 3 and current == curr) {
-                            tempAns.push_back(products[k]);
-                            count++;
-                            k++;
-                            if(k < products.size())
-                                current = products[k].substr(0,i + 1); 
-                        }
-                        break;
-                    }
-                    else {
-                        if(products[mid - 1].substr(0,i+1) == current) {
-                            high = mid - 1;
-                        }
-                        else {
-                            int k = mid, count = 0;
-                            while(k < products.size() and count < 3 and current == curr) {
-                                tempAns.push_back(products[k]);
-                                count++;
-                                k++;
-                                if(k < products.size())
-                                    current = products[k].substr(0,i + 1); 
-                            }
-                            break;
-                        }
-                    }
-                }
+        unordered_map<string,set<string>> m;
+        for(int i = 0; i < products.size(); i++) {
+            for(int j = 1; j < products[i].length() + 1; j++) {
+                m[products[i].substr(0,j)].insert(products[i]);
             }
-            ans.push_back(tempAns);
+        }
+        
+        vector<vector<string>> ans(searchWord.length());
+        for(int i = 0; i < searchWord.length(); i++) {
+            int ct = 0;
+            for(auto x : m[searchWord.substr(0,i + 1)]) {
+                ans[i].push_back(x);
+                ct++;
+                if(ct == 3)
+                    break;
+            }
         }
         return ans;
-        
     }
 };
