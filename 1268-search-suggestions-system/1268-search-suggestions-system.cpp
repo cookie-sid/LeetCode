@@ -1,21 +1,18 @@
 class Solution {
 public:
     vector<vector<string>> suggestedProducts(vector<string>& products, string searchWord) {
-        unordered_map<string,set<string>> m;
-        for(int i = 0; i < products.size(); i++) {
-            for(int j = 1; j < products[i].length() + 1; j++) {
-                m[products[i].substr(0,j)].insert(products[i]);
-            }
-        }
-        
+        sort(products.begin(), products.end());
         vector<vector<string>> ans(searchWord.length());
+        int start = 0, end = products.size() - 1, n = products.size() - 1;
         for(int i = 0; i < searchWord.length(); i++) {
-            int ct = 0;
-            for(auto x : m[searchWord.substr(0,i + 1)]) {
-                ans[i].push_back(x);
-                ct++;
-                if(ct == 3)
-                    break;
+            while(start <= n and (products[start].length() < i + 1 or products[start][i] < searchWord[i])) {
+                start++;
+            }
+            while(end >= 0 and (products[end].length() < i + 1 or products[end][i] > searchWord[i])) {
+                end--;
+            }
+            for(int j = start; j <= min(end,min(start + 2, (int)products.size() - 1)); j++) {
+                ans[i].push_back(products[j]);
             }
         }
         return ans;
