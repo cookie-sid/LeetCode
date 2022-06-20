@@ -15,25 +15,31 @@ public:
             return head;
         }
         int n = 1;
-        vector<int> vals;
-        vals.push_back(head -> val);
         ListNode* temp = head;
         while(temp -> next != NULL) {
             n++;
             temp = temp -> next;
-            vals.push_back(temp -> val);
         }
         k = k % n;
-        temp = head;
-        int ctr = n - k;
-        while(temp -> next != NULL) {
-            ctr >= n ? ctr = 0 : ctr = ctr;
-            temp -> val = vals[ctr];
-            ctr++;
-            temp = temp -> next;
+        int rem = n - k, ctr = 0;
+        ListNode* newHead = head;
+        ListNode* prev = head;
+        if(k == 0) {
+            return head;
         }
-        ctr >= n ? ctr = 0 : ctr = ctr;
-        temp -> val = vals[ctr];
-        return head;
+        while(ctr < rem) {
+            ctr += 1;
+            newHead = newHead -> next;
+            if(ctr != 1) {
+                prev = prev -> next;
+            }
+        }
+        prev -> next = NULL;
+        ListNode* tmp = newHead;
+        while(tmp -> next != NULL) {
+            tmp = tmp -> next;
+        }
+        tmp -> next = head;
+        return newHead;
     }
 };
