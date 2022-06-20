@@ -8,34 +8,22 @@ public:
     int minimumLengthEncoding(vector<string>& words) {
         sort(words.begin(), words.end(), cmp);
         string ans = "";
+        unordered_map<string,bool> m;
         for(int i = 0; i < words.size(); i++) {
             if(i == 0) {
-                ans += words[i];
-                ans += "#";
+                for(int j = 0; j < words[i].length(); j++) {
+                    m[words[i].substr(j)] = true;
+                }
+                ans += words[i] + "#";
             }
             else {
-                int pos = 0;
-                bool isIt = false;
-                while(true) {
-                    if(ans.find(words[i],pos) == string::npos) {
-                        break;
+                if(!m[words[i]]) {
+                    for(int j = 0; j < words[i].length(); j++) {
+                        m[words[i].substr(j)] = true;
                     }
-                    else {
-                        int ind = ans.find(words[i],pos);
-                        if(ans[ind + words[i].length()] != '#') {
-                            pos += words[i].length();
-                        }
-                        else {
-                            isIt = true;
-                            break;
-                        }
-                    }
-                }
-                if(!isIt) {
                     ans += words[i] + "#";
                 }
             }
-
         }
         return ans.length();
     }
