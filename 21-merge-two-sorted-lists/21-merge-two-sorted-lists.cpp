@@ -11,33 +11,50 @@
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        
-        if(list1 == NULL)
-            return list2;
-        if(list2 == NULL)
-            return list1;
-        
-        if(list1 -> val > list2 -> val) {
-            ListNode* temp = list1;
-            list1 = list2;
-            list2 = temp;
+        ListNode *h1 = list1, *h2 = list2;
+        if(h1 == NULL) {
+            return h2;
         }
-        ListNode* currhead = list1;
-        while(list1 -> next != NULL and list1 -> next -> val <= list2 -> val) {
-            list1 = list1 -> next; 
-            cout<<list1->val<<endl;
+        if(h2 == NULL) {
+            return h1;
         }
         
-        ListNode* temp = list1 -> next;
-        ListNode* temp2 = list2;
-        list1 -> next = list2;
-        if(temp2 -> next == NULL) {
-            list2 -> next = temp;
-            return currhead;
+        while(h1 != NULL and h2 != NULL) {
+            if(h1 -> val < h2 -> val) {
+                while(h1 -> next != NULL and h1 -> next -> val <= h2 -> val) {
+                    h1 = h1 -> next;
+                }
+                if(h1 -> next != NULL) {
+                    ListNode *temp = h1;
+                    h1 = h1 -> next;
+                    temp -> next = h2;
+                    temp = h2;
+                    h2 = h1;
+                    h1 = temp;
+                }
+                else {
+                    h1 -> next = h2;
+                    break;
+                }
+            }
+            else {
+                while(h2 -> next != NULL and h2 -> next -> val <= h1 -> val) {
+                    h2 = h2 -> next;
+                }
+                if(h2 -> next != NULL) {
+                    ListNode *temp = h2;
+                    h2 = h2 -> next;
+                    temp -> next = h1;
+                    temp = h1;
+                    h1 = h2;
+                    h2 = temp;
+                }
+                else {
+                    h2 -> next = h1;
+                    break;
+                }
+            }
         }
-        list2 -> next = mergeTwoLists(temp, temp2 -> next);
-        
-        return currhead;
-        
+        return list1 -> val < list2 -> val ? list1 : list2;
     }
 };
