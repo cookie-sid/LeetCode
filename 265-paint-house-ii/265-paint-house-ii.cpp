@@ -3,35 +3,41 @@ public:
     int minCostII(vector<vector<int>>& costs) {
         int k = costs[0].size();
         int ans = 1e9;
-        vector<int> minFromLeft(k), minFromRight(k);
-        minFromLeft[0] = costs[0][0];
-        for(int i = 1; i < k; i++) {
-            minFromLeft[i] = min(minFromLeft[i-1],costs[0][i]);
-        }
-        minFromRight[k-1] = costs[0][k-1];
-        for(int i = k-2; i >= 0; i--) {
-            minFromRight[i] = min(minFromRight[i+1],costs[0][i]);
-        }
         
         for(int i = 1; i < costs.size(); i++) {
+            
+            int minIndex = -1, secondMinIndex = -1;
             for(int j = 0; j < k; j++) {
-                if(j == 0) {
-                    costs[i][j] += minFromRight[j+1];
+                if(minIndex == -1 and secondMinIndex == -1) {
+                    minIndex = j;
                 }
-                else if(j == k - 1) {
-                    costs[i][j] += minFromLeft[j-1];
+                else if(secondMinIndex == -1) {
+                    if(costs[i-1][minIndex] > costs[i-1][j]) {
+                        secondMinIndex = minIndex;
+                        minIndex = j;
+                    }
+                    else {
+                        secondMinIndex = j;
+                    }
                 }
                 else {
-                    costs[i][j] += min(minFromLeft[j-1],minFromRight[j+1]);
+                    if(costs[i-1][minIndex] >= costs[i-1][j]) {
+                        secondMinIndex = minIndex;
+                        minIndex = j;
+                    }
+                    else if(costs[i-1][minIndex] < costs[i-1][j] and costs[i-1][secondMinIndex] > costs[i-1][j]) {
+                        secondMinIndex = j;
+                    }
                 }
             }
-            minFromLeft[0] = costs[i][0];
-            for(int j = 1; j < k; j++) {
-                minFromLeft[j] = min(minFromLeft[j-1],costs[i][j]);
-            }
-            minFromRight[k-1] = costs[i][k-1];
-            for(int j = k-2; j >= 0; j--) {
-                minFromRight[j] = min(minFromRight[j+1],costs[i][j]);
+            
+            for(int j = 0; j < k; j++) {
+                if(j == minIndex) {
+                    costs[i][j] += costs[i-1][secondMinIndex];
+                }
+                else {
+                    costs[i][j] += costs[i-1][minIndex];
+                }
             }
         }
         for(int i = 0; i < k; i++) {
