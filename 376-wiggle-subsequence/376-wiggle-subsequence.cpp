@@ -4,23 +4,16 @@ public:
         if(nums.size() <= 1) {
             return nums.size();
         }
-        int peak = 0;
-        vector<int> temp;
-        temp.push_back(nums[0]);
+        int up = 1, down = 1;
         for(int i = 1; i < nums.size(); i++) {
-            if(nums[i] != temp.back()) {
-                temp.push_back(nums[i]);
+            if(nums[i] > nums[i-1]) {
+                up = down + 1;
+            }
+            else if(nums[i] < nums[i-1]) {
+                down = up + 1;
             }
         }
-        if(temp.size() == 1) {
-            return 1;
-        }
-        int ans = 2;
-        for(int i = 1; i < temp.size() - 1; i++) {
-            if((temp[i] > temp[i+1] and temp[i] > temp[i-1]) or (temp[i] < temp[i+1] and temp[i] < temp[i-1])) {
-                ans++;
-            }
-        }
-        return ans;
+        return max(up,down);
+        
     }
 };
