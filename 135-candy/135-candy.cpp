@@ -16,18 +16,19 @@ public:
                 candies[i] = 1;
             }
         }
+        int ans = candies[n-1];
         for(int i = n - 2; i >= 0; i--) {
             if(ratings[i] > ratings[i+1]) {
                 while(i >= 0 and ratings[i] > ratings[i+1]) {
                     candies[i] = max(candies[i],candies[i+1] + 1);
+                    ans += candies[i];
                     i--;
                 }
                 i++;
             }
-        }
-        int ans = 0;
-        for(auto x : candies) {
-            ans += x;
+            else {
+                ans += candies[i];
+            }
         }
         return ans;
     }
