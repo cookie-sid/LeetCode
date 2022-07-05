@@ -13,6 +13,9 @@ class Solution {
 public:
     
     int dfs(TreeNode* root, int n, unordered_map<TreeNode*, int> &m, int &ans) {
+        if(m[root] != 0) {
+            return m[root];
+        }
         m[root] = max(m[root],n);
         ans = max(ans,m[root]);
         if(root -> left != NULL and root -> left -> val == root -> val + 1) {
