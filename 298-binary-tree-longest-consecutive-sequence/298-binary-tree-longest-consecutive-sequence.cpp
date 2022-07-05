@@ -12,30 +12,25 @@
 class Solution {
 public:
     
-    int dfs(TreeNode* root, int n, unordered_map<TreeNode*, int> &m, int &ans) {
-        if(m[root] != 0) {
-            return m[root];
-        }
-        m[root] = max(m[root],n);
-        ans = max(ans,m[root]);
+    int dfs(TreeNode* root, int n, int &ans) {
+        ans = max(ans,n);
         if(root -> left != NULL and root -> left -> val == root -> val + 1) {
-            dfs(root -> left, m[root] + 1, m, ans);
+            dfs(root -> left, n + 1, ans);
         }
         if(root -> left != NULL and root -> left -> val != root -> val + 1) {
-            dfs(root -> left, 1, m, ans);
+            dfs(root -> left, 1, ans);
         }
         if(root -> right != NULL and root -> right -> val == root -> val + 1) {
-            dfs(root -> right, m[root] + 1, m, ans);
+            dfs(root -> right, n + 1, ans);
         }
         if(root -> right != NULL and root -> right -> val != root -> val + 1) {
-            dfs(root -> right, 1, m, ans);
+            dfs(root -> right, 1, ans);
         }
         return ans;
     }
     
     int longestConsecutive(TreeNode* root) {
-        int ans = 1;
-        unordered_map<TreeNode*, int> m;
-        return dfs(root,1,m,ans);
+        int ans = 1, n = 1;
+        return dfs(root,n,ans);
     }
 };
