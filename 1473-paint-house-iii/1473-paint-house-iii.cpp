@@ -18,20 +18,7 @@ public:
             mm[memoPair] = 0;
             return 0;
         }
-        if(currHouse == 0) {
-            if(houses[currHouse] == 0) {
-                int mini = 1e9;
-                for(int i = 0; i < n; i++) {
-                    mini = min(mini,cost[currHouse][i] + recurr(houses,cost,m,n,currHouse + 1,i + 1,currNHs + 1,target,mm));
-                }
-                mm[memoPair] = mini;
-                return mini;
-            }
-            else {
-                mm[memoPair] = recurr(houses,cost,m,n,currHouse + 1, houses[currHouse],currNHs + 1,target,mm);
-                return mm[memoPair];
-            }
-        }
+        
         if(houses[currHouse] != 0) {
             if(houses[currHouse] == lastSelect) {
                 mm[memoPair] = recurr(houses,cost,m,n,currHouse + 1,lastSelect,currNHs,target,mm);
