@@ -5,16 +5,17 @@ public:
                int currHouse, int lastSelect, int currNHs, int target, 
                map<pair<int,pair<int,int>>,int> &mm) {
         
-        if(mm.find(make_pair(lastSelect,make_pair(currHouse,currNHs))) != mm.end()) {
-            return mm[make_pair(lastSelect,make_pair(currHouse,currNHs))];
+        auto memoPair = make_pair(lastSelect,make_pair(currHouse,currNHs));
+        if(mm.find(memoPair) != mm.end()) {
+            return mm[memoPair];
         }
         
         if(currNHs > target or (currNHs < target and currHouse == m)) {
-            mm[make_pair(lastSelect,make_pair(currHouse,currNHs))] = 1e9;
+            mm[memoPair] = 1e9;
             return 1e9;
         }
         if(currNHs == target and currHouse == m) {
-            mm[make_pair(lastSelect,make_pair(currHouse,currNHs))] = 0;
+            mm[memoPair] = 0;
             return 0;
         }
         if(currHouse == 0) {
@@ -23,22 +24,22 @@ public:
                 for(int i = 0; i < n; i++) {
                     mini = min(mini,cost[currHouse][i] + recurr(houses,cost,m,n,currHouse + 1,i + 1,currNHs + 1,target,mm));
                 }
-                mm[make_pair(lastSelect,make_pair(currHouse,currNHs))] = mini;
+                mm[memoPair] = mini;
                 return mini;
             }
             else {
-                mm[make_pair(lastSelect,make_pair(currHouse,currNHs))] = recurr(houses,cost,m,n,currHouse + 1, houses[currHouse],currNHs + 1,target,mm);
-                return mm[make_pair(lastSelect,make_pair(currHouse,currNHs))];
+                mm[memoPair] = recurr(houses,cost,m,n,currHouse + 1, houses[currHouse],currNHs + 1,target,mm);
+                return mm[memoPair];
             }
         }
         if(houses[currHouse] != 0) {
             if(houses[currHouse] == lastSelect) {
-                mm[make_pair(lastSelect,make_pair(currHouse,currNHs))] = recurr(houses,cost,m,n,currHouse + 1,lastSelect,currNHs,target,mm);
-                return mm[make_pair(lastSelect,make_pair(currHouse,currNHs))];
+                mm[memoPair] = recurr(houses,cost,m,n,currHouse + 1,lastSelect,currNHs,target,mm);
+                return mm[memoPair];
             }
             else {
-                mm[make_pair(lastSelect,make_pair(currHouse,currNHs))] = recurr(houses,cost,m,n,currHouse + 1,houses[currHouse],currNHs + 1,target,mm);
-                return mm[make_pair(lastSelect,make_pair(currHouse,currNHs))];
+                mm[memoPair] = recurr(houses,cost,m,n,currHouse + 1,houses[currHouse],currNHs + 1,target,mm);
+                return mm[memoPair];
             }
         }
         int mini = 1e9;
@@ -51,7 +52,7 @@ public:
             }
         }
         
-        mm[make_pair(lastSelect,make_pair(currHouse,currNHs))] = mini;
+        mm[memoPair] = mini;
         return mini;
     }
     
