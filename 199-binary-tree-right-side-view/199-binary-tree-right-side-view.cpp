@@ -12,23 +12,23 @@
 class Solution {
 public:
     
-    void dfs(TreeNode* root, int level, vector<int> &v) {
-        if(root == NULL)
+    void dfs(TreeNode* root, vector<int> &ans, int level) {
+        if(root == NULL) {
             return;
-        if((int)v.size() - 1 < level) {
-            v.push_back(root -> val);
         }
-        if(root -> right != NULL) {
-            dfs(root -> right, level + 1, v);
+        if(ans.size() < level) {
+            ans.push_back(root -> val);
         }
-        if(root -> left != NULL) {
-            dfs(root -> left, level + 1, v);
+        else {
+            ans[level - 1] = root -> val;
         }
+        dfs(root -> left,ans,level + 1);
+        dfs(root -> right,ans,level + 1);
     }
     
     vector<int> rightSideView(TreeNode* root) {
         vector<int> ans;
-        dfs(root,0,ans);
+        dfs(root,ans,1);
         return ans;
     }
 };
