@@ -12,24 +12,35 @@
 class FindElements {
 public:
     
-    map<int,bool> m;
+    TreeNode* rt;
     
     void fillAll(TreeNode* root, int val) {
         if(root == NULL) {
             return;
         }
         root->val = val;
-        m[val] = true;
         fillAll(root -> left, 2*val + 1);
         fillAll(root -> right, 2*val + 2);
     }
     
+    bool findIt(TreeNode* rt, int target) {
+        if(rt == NULL) {
+            return false;
+        }
+        if(rt -> val == target) {
+            return true;
+        }
+        return findIt(rt -> left,target) or findIt(rt -> right,target);
+    }
+    
     FindElements(TreeNode* root) {
+        rt = root;
         fillAll(root,0);
     }
     
     bool find(int target) {
-        return m[target];
+        TreeNode* tp = rt;
+        return findIt(tp,target);
     }
 };
 
