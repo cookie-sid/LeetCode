@@ -1,30 +1,32 @@
 class Solution {
 public:
     vector<int> shortestDistanceColor(vector<int>& colors, vector<vector<int>>& queries) {
-        int n = colors.size();
-        vector<vector<int>> colorIndices(n, vector<int> (4,1e9));
-        vector<int> lastSeenAt(4,-1e9);
+        vector<vector<int>> colorIndices(4);
         for(int i = 0; i < colors.size(); i++) {
-            lastSeenAt[colors[i]] = i;
-            for(int j = 1; j < colorIndices[i].size(); j++) {
-                colorIndices[i][j] = min(i - lastSeenAt[j],colorIndices[i][j]);
-            }
-        }
-        lastSeenAt[1] = 1e9;
-        lastSeenAt[2] = 1e9;
-        lastSeenAt[3] = 1e9;
-        for(int i = n - 1; i >= 0; i--) {
-            lastSeenAt[colors[i]] = i;
-            for(int j = 1; j < colorIndices[i].size(); j++) {
-                colorIndices[i][j] = min(lastSeenAt[j] - i,colorIndices[i][j]);
-            }
+            colorIndices[colors[i]].push_back(i);
         }
         vector<int> ans;
         for(int i = 0; i < queries.size(); i++) {
-            ans.push_back(colorIndices[queries[i][0]][queries[i][1]] > 1e5 ? -1 : colorIndices[queries[i][0]][queries[i][1]]);
-            
+            int index = queries[i][0];
+            int reqColor = queries[i][1];
+            int upper = upper_bound(colorIndices[reqColor].begin(),colorIndices[reqColor].end(),index) - colorIndices[reqColor].begin();
+            int currAns = 1e9;
+            if(colorIndices[reqColor].size() == 0) {
+                ans.push_back(-1);
+                continue;
+            }
+            if(colors[index] == reqColor) {
+                ans.push_back(0);
+                continue;
+            }
+            if(upper != 0) {
+                currAns = min(index - colorIndices[reqColor][upper-1],currAns);
+            }
+            if(upper != (int)colorIndices[reqColor].size()) {
+                currAns = min(colorIndices[reqColor][upper] - index,currAns);
+            }
+            ans.push_back(currAns);
         }
         return ans;
-            
     }
 };
