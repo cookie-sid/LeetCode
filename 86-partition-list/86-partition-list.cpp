@@ -11,43 +11,30 @@
 class Solution {
 public:
     ListNode* partition(ListNode* head, int x) {
-        ListNode* smaller = NULL, *biggerOrEqual = NULL, *firstOfBigger = NULL, *firstOfSmaller = NULL;
+        ListNode* smaller = new ListNode(0), *biggerOrEqual = new ListNode(0), *firstOfBigger = biggerOrEqual, *firstOfSmaller = smaller;
         if(head == NULL or head -> next == NULL) {
             return head;
         }
         ListNode* p = head;
         while(p != NULL) {
             if(p -> val < x) {
-                if(smaller == NULL) {
-                    smaller = new ListNode(p -> val);
-                    firstOfSmaller = smaller;
-                }
-                else {
-                    smaller -> next = new ListNode(p -> val);
-                    smaller = smaller -> next;
-                }
+                smaller -> next = p;
+                smaller = smaller -> next;
             }
             else {
-                if(biggerOrEqual == NULL) {
-                    biggerOrEqual = new ListNode(p -> val);
-                    firstOfBigger = biggerOrEqual;
-                }
-                else {
-                    biggerOrEqual -> next = new ListNode(p -> val);
-                    biggerOrEqual = biggerOrEqual -> next;
-                }
+                biggerOrEqual -> next = p;
+                biggerOrEqual = biggerOrEqual -> next;
             }
             
             p = p -> next;
         }
-        
-        if(smaller == NULL) {
-            return firstOfBigger;
+        if(firstOfSmaller -> next == NULL) {
+            return firstOfBigger -> next;
         }
+        biggerOrEqual -> next = NULL;
+        smaller -> next = firstOfBigger -> next;
         
-        smaller -> next = firstOfBigger;
         
-        
-        return firstOfSmaller;
+        return firstOfSmaller -> next;
     }
 };
