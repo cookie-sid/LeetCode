@@ -15,16 +15,13 @@ public:
            hcf = gcd(hcf,numsDivide[i]); 
         }
         
-        priority_queue<int, vector<int>, greater<int>> pq;
+        sort(nums.begin(),nums.end());
         for(int i = 0; i < nums.size(); i++) {
-            pq.push(nums[i]);
+            if(hcf % nums[i] == 0) {
+                return i;
+            }
         }
         
-        while(!pq.empty() and hcf % pq.top() != 0) {
-            pq.pop();
-        }
-        
-        int del = pq.size();
-        return n - del == n ? -1 : n - del; 
+        return -1;
     }
 };
