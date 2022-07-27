@@ -2,7 +2,6 @@ class Solution {
 public:
     
     set<vector<int>> twoSum(vector<int> &nums, int start, int end, int target) {
-        map<int,int> m;
         set<vector<int>> ans;
         while(start < end) {
             if(nums[start] + nums[end] > target) {
