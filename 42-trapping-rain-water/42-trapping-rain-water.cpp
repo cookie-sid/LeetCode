@@ -1,22 +1,39 @@
 class Solution {
 public:
     int trap(vector<int>& height) {
-        
-        
-        int n = height.size();
-        if(n == 1) {
-            return 0;
-        }
-        vector<int> rtol(n);
-        rtol[n-1] = height[n-1];
-        for(int i = n - 2; i >= 0; i--) {
-            rtol[i] = max(rtol[i+1],height[i]);
-        }
-        int water = 0, maxi = height[0];
-        for(int i = 1; i < n - 1; i++) {
-            water += max(0,min(maxi,rtol[i+1]) - height[i]);
+        vector<int> maxfromleft(height.size()), maxfromright(height.size());
+        int maxi = -1;
+        for(int i = 0; i < height.size(); i++) {
+            maxfromleft[i] = max(maxi,height[i]);
             maxi = max(maxi,height[i]);
         }
-        return water;
+        maxi = -1;
+        for(int i = height.size() - 1; i > -1; i--) {
+            maxfromright[i] = max(maxi,height[i]);
+            maxi = max(maxi,height[i]);
+        }
+        vector<int> res(height.size());
+        for(int i = 0; i < height.size(); i++) {
+            if(i == 0 or i == height.size() - 1) {
+                res[i] = height[i];
+            }
+            else {
+                if(maxfromleft[i-1] < height[i]) {
+                    res[i] = height[i];
+                    continue;
+                }
+                if(maxfromright[i+1] < height[i]) {
+                    res[i] = height[i];
+                    continue;
+                }
+                res[i] = min(maxfromleft[i-1],maxfromright[i+1]);
+            }
+        }
+        int ans = 0;
+        for(int i = 0; i < res.size(); i++)
+        {
+            ans += abs(height[i] - res[i]);
+        }
+        return ans;
     }
 };
