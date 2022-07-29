@@ -1,23 +1,33 @@
 class Vector2D {
 public:
     
-    vector<int> v;
-    int ptr = 0;
+    vector<vector<int>> v;
+    int x = 0, y = 0;
     
     Vector2D(vector<vector<int>>& vec) {
-        for(auto x : vec) {
-            for(auto y : x) {
-                v.push_back(y);
-            }
-        }
+        v = vec;
     }
     
     int next() {
-        return v[ptr++];
+        while(v[x].size() == y) {
+            x++;
+            y = 0;
+        }
+        int res = v[x][y];
+        y++;
+        while(x < v.size() and v[x].size() == y) {
+            x++;
+            y = 0;
+        }
+        return res;
     }
     
     bool hasNext() {
-        return ptr != v.size();
+        while(x < v.size() and v[x].size() == y) {
+            x++;
+            y = 0;
+        }
+        return !(x == v.size());
     }
 };
 
