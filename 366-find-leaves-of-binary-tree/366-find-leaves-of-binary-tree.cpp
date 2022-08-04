@@ -12,45 +12,30 @@
 class Solution {
 public:
     
-    void dfs(TreeNode* root, vector<TreeNode*> &curr, map<TreeNode*, bool> &m) {
-        if((root -> left == NULL and root -> right == NULL)) {
-            curr.push_back(root);
-            return;
-        }
-        if((root -> left == NULL and m[root -> right])) {
-            curr.push_back(root);
-            return;
-        }
-        if((m[root -> left] and root -> right == NULL)) {
-            curr.push_back(root);
-            return;
-        }
-        if((m[root -> left] and m[root -> right])) {
-            curr.push_back(root);
-            return;
-        }
+    void dfs(TreeNode* root, map<TreeNode*, bool> &m, vector<TreeNode*> &ans) {
         if(root -> left != NULL and !m[root -> left]) {
-            dfs(root -> left, curr, m);
+            dfs(root -> left,m,ans);
         }
         if(root -> right != NULL and !m[root -> right]) {
-            dfs(root -> right, curr, m);
+            dfs(root -> right,m,ans);
+        }
+        if((root -> left == NULL or m[root -> left]) and (root -> right == NULL or m[root -> right])) {
+            ans.push_back(root);
         }
     }
     
     vector<vector<int>> findLeaves(TreeNode* root) {
-        
-        vector<vector<int>> ans;
-        vector<TreeNode*> curr;
         map<TreeNode*, bool> m;
+        vector<vector<int>> ans;
         while(!m[root]) {
-            dfs(root,curr,m);
+            vector<TreeNode*> tmp;
+            dfs(root,m,tmp);
             vector<int> vals;
-            for(auto x : curr) {
-                vals.push_back(x -> val);
-                m[x] = true;
+            for(auto node : tmp) {
+                vals.push_back(node -> val);
+                m[node] = true;
             }
             ans.push_back(vals);
-            curr.clear();
         }
         return ans;
     }
