@@ -12,29 +12,28 @@
 class Solution {
 public:
     
-    void dfs(TreeNode* root, map<TreeNode*, bool> &m, vector<TreeNode*> &ans) {
-        if(root -> left != NULL and !m[root -> left]) {
-            dfs(root -> left,m,ans);
+    void dfs(TreeNode* &root, vector<int> &ans) {
+        bool pres = false;
+        if(root -> left != NULL) {
+            pres = true;
+            dfs(root -> left,ans);
         }
-        if(root -> right != NULL and !m[root -> right]) {
-            dfs(root -> right,m,ans);
+        if(root -> right != NULL) {
+            pres = true;
+            dfs(root -> right,ans);
         }
-        if((root -> left == NULL or m[root -> left]) and (root -> right == NULL or m[root -> right])) {
-            ans.push_back(root);
+        if(!pres and ((root -> left == NULL) and (root -> right == NULL))) {
+            ans.push_back(root -> val);
+            root = NULL;
         }
     }
     
     vector<vector<int>> findLeaves(TreeNode* root) {
         map<TreeNode*, bool> m;
         vector<vector<int>> ans;
-        while(!m[root]) {
-            vector<TreeNode*> tmp;
-            dfs(root,m,tmp);
+        while(root != NULL) {
             vector<int> vals;
-            for(auto node : tmp) {
-                vals.push_back(node -> val);
-                m[node] = true;
-            }
+            dfs(root,vals);
             ans.push_back(vals);
         }
         return ans;
