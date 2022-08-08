@@ -1,19 +1,19 @@
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
-        int n = nums.size();
-        vector<int> dp(n,1);
-        dp[0] = 1;
-        int maxi = 1;
-        for(int i = 1; i < n; i++) {
-            for(int j = i - 1; j >= 0; j--) {
-                if(nums[j] < nums[i]) {
-                    dp[i] = max(dp[i],dp[j] + 1);
-                }
-            }
+        int n = nums.size(),maxi = 1;
+        vector<int> dp(n + 1,1e9);
+        dp[0] = -1e9;
+        
+        for(int i = 0; i < n; i++) {
+            int lower = lower_bound(dp.begin(),dp.end(),nums[i]) - dp.begin();
+            dp[lower] = nums[i];
         }
-        for(auto x : dp) {
-            maxi = max(maxi,x);
+        
+        for(int i = 1; i <= n; i++) {
+            if(dp[i] < 1e9) {
+                maxi = i;
+            }
         }
         return maxi;
     }
