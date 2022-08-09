@@ -2,7 +2,7 @@ class Solution {
 public:
     
     int countDistinct(vector<int>& nums, int k, int p) {
-        set<vector<int>> s;
+        map<vector<int>,bool> m;
         for(int i = 0; i < nums.size(); i++) {
             int ct = 0;
             vector<int> v;
@@ -12,13 +12,13 @@ public:
                 }
                 v.push_back(nums[j]);
                 if(ct <= k) {
-                    s.insert(v);
+                    m[v] = true;
                 }
                 else {
                     break;
                 }
             }
         }
-        return s.size();
+        return m.size();
     }
 };
