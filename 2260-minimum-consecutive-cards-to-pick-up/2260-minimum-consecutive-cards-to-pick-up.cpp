@@ -1,7 +1,7 @@
 class Solution {
 public:
     int minimumCardPickup(vector<int>& cards) {
-        map<int,int> m;
+        unordered_map<int,int> m;
         int mini = 1e9;
         for(int i = 0; i < cards.size(); i++) {
             if(m[cards[i]] == 0) {
