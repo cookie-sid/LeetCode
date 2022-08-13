@@ -1,40 +1,40 @@
 class StockPrice {
 public:
     
-    int currTS = 0, currPrice = -1;
-    unordered_map<int,int> m;
-    priority_queue<pair<int,int>> pq_max, pq_min;
-    
+    map<int,int> m;
+    priority_queue<pair<int,int>> maxi,mini;
+    int latestTS = -1, latestPrice = -1;
+        
     StockPrice() {
+        
     }
     
-    void update(int ts, int price) {
-        m[ts] = price;
-        pq_min.push(make_pair(-price,ts));
-        pq_max.push(make_pair(price,ts));
-        if(ts >= currTS) {
-            currTS = ts;
-            currPrice = price;
+    void update(int timestamp, int price) {
+        m[timestamp] = price;
+        maxi.push(make_pair(price,timestamp));
+        mini.push(make_pair(-price,timestamp));
+        if(timestamp >= latestTS) {
+            latestTS = timestamp;
+            latestPrice = price;
         }
     }
     
     int current() {
-        return currPrice;
+        return latestPrice;
     }
     
     int maximum() {
-        while(m[pq_max.top().second] != pq_max.top().first) {
-            pq_max.pop();
+        while(m[maxi.top().second] != maxi.top().first) {
+            maxi.pop();
         }
-        return pq_max.top().first;
+        return maxi.top().first;
     }
     
     int minimum() {
-        
-        while(m[pq_min.top().second] != -pq_min.top().first) {
-            pq_min.pop();
+        while(m[mini.top().second] != -mini.top().first) {
+            mini.pop();
         }
-        return -pq_min.top().first;
+        return -mini.top().first;
     }
 };
 
