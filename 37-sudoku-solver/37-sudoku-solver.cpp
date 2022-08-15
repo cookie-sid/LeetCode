@@ -3,7 +3,7 @@ public:
     
     bool check(vector<vector<char>> &board) {
         for(int i = 0; i < 9; i++) {
-            set<char> r,c;
+            unordered_set<char> r,c;
             for(int j = 0; j < 9; j++) {
                 if(board[i][j] == '.')
                     return false;
@@ -17,7 +17,7 @@ public:
         }
         for(int i = 0; i < 9; i+=3) {
             for(int j = 0; j < 9; j+=3) {
-                set<char> box;
+                unordered_set<char> box;
                 for(int k = i; k < i + 3; k++) {
                     for(int l = j; l < j + 3; l++) {
                         if(board[k][l] == '.')
