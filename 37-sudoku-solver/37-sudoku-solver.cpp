@@ -34,13 +34,11 @@ public:
     
     bool fill(vector<vector<char>> &board) {
         bool ans = false;
-        if(check(board)) {
-            
-            return true;
-        }
+        bool done = true;
         for(int i = 0; i < 9; i++) {
             for(int j = 0; j < 9; j++) {
                 if(board[i][j] == '.') {
+                    done = false;
                     vector<bool> s(10,true);
                     int x = (i/3)*3, y = (j/3)*3;
                     for(int k = x; k < x + 3; k++) {
@@ -78,6 +76,11 @@ public:
                         return false;
                     }
                 }
+            }
+        }
+        if(done) {
+            if(check(board)) {
+                return true;
             }
         }
         return ans;
