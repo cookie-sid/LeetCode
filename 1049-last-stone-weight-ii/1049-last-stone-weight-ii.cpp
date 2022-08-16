@@ -6,7 +6,6 @@ public:
         if(m.find(make_pair(total,curr)) != m.end())
             return m[make_pair(total,curr)];
         if(curr == n) {
-            m[make_pair(total,curr)] = total < 0 ? 1e9 : total;
             return total < 0 ? 1e9 : total;
         }
         int ans = 1e9;
