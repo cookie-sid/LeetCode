@@ -3,7 +3,7 @@ public:
     
     int oddEvenJumps(vector<int>& arr) {
         int n = arr.size();
-        map<int,int> m;
+        unordered_map<int,int> m;
         set<int> s;
         vector<vector<bool>> dp(n,vector<bool>(2));
         dp[n-1][0] = true;
