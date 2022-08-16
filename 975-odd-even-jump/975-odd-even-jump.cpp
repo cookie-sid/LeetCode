@@ -3,28 +3,28 @@ public:
     
     int oddEvenJumps(vector<int>& arr) {
         int n = arr.size();
-        unordered_map<int,int> m;
+        map<int,int> m;
         set<int> s;
-        vector<vector<bool>> dp(n,vector<bool>(2));
-        dp[n-1][0] = true;
-        dp[n-1][1] = true;
+        vector<pair<bool,bool>> dp(n);
+        dp[n-1].first = true;
+        dp[n-1].second = true;
         m[arr[n-1]] = n;
         s.insert(arr[n-1]);
         for(int i = n - 2; i >= 0; i--) {
             auto it = s.lower_bound(arr[i]);
             if(it == s.end()) {
-                dp[i][1] = false;
+                dp[i].second = false;
             }
             else {
-                dp[i][1] = dp[m[(*it)] - 1][0];
+                dp[i].second = dp[m[(*it)] - 1].first;
             }
             if(it != s.end() and (*it) == arr[i]) {
-                dp[i][0] = dp[m[(*it)] - 1][1];
+                dp[i].first = dp[m[(*it)] - 1].second;
             }
             else {
                 if(it != s.begin()) {
                     it--;
-                    dp[i][0] = dp[m[(*it)] - 1][1];
+                    dp[i].first = dp[m[(*it)] - 1].second;
                 }
             }
             s.insert(arr[i]);
@@ -33,7 +33,7 @@ public:
         int ans = 0;
         for(auto x : dp) {
             // cout<<x[0]<<" "<<x[1]<<endl;
-            ans += x[1];
+            ans += x.second;
         }
         return ans;
     }
