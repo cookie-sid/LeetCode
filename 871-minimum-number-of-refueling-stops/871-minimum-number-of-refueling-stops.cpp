@@ -1,47 +1,23 @@
 class Solution {
 public:
+    
     int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
-        sort(stations.begin(),stations.end());
-        if(target <= startFuel) {
-            return 0;
-        }
-        if(stations.size() == 0) {
-            return -1;
-        }
-        if(startFuel < stations[0][0]) {
-            return -1;
-        }
         
-        vector<int> dp(stations.size() + 1);
-        set<int> picked;
+        int n = stations.size();
+        vector<long long> dp(n + 1);
         dp[0] = startFuel;
-        int lastvalid = 0;
-        for(int i = 1; i <= stations.size(); i++) {
-            int start = 0;
-            int index = -1, maxi_boost = -1;
-            while(start < stations.size() and dp[i-1] >= stations[start][0]) {
-                if(picked.count(start) == 1) {
-                    start++;
-                    continue;
-                }
-                if(maxi_boost < dp[i-1] + stations[start][1]) {
-                    maxi_boost = dp[i-1] + stations[start][1];
-                    index = start;
-                }
-                start++;
+        for(int i = 0; i < stations.size(); i++) {
+            int maxi = -1;
+            for(int j = i; j >= 0; j--) {
+                if(dp[j] >= stations[i][0])
+                    dp[j + 1] = max(dp[j + 1], dp[j] + stations[i][1]);
             }
-            // cout<<maxi_boost<<" "<<start<<" "<<index<<endl;
-            if(index == -1) {
-                return -1;
-            }
-            else {
-                dp[i] = maxi_boost;
-                if(maxi_boost >= target) {
-                    return i;
-                }
-                picked.insert(index);
-            }
+        }
+        for(int i = 0; i <= n; i++) {
+            if(dp[i] >= target)
+                return i;
         }
         return -1;
+        
     }
 };
