@@ -1,40 +1,23 @@
 class Solution {
 public:
-    int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
-        int m = matrix.size(), n = matrix[0].size();
-        for(int i = 0; i < m; i++) {
-            for(int j = 1; j < n; j++) {
-                matrix[i][j] += matrix[i][j-1];
+    int maxSumSubmatrix(vector<vector<int>>& m, int k) {
+    int res = INT_MIN, rows = m.size(), cols = m[0].size();
+    for (int l = 0; l < cols; ++l) {
+        vector<int> sums(rows);
+        for (int r = l; r < cols; ++r) {
+            for (int i = 0; i < rows; ++i) 
+                sums[i] += m[i][r];
+            set<int> s = {0};
+            int run_sum = 0;
+            for (int sum : sums) {
+                run_sum += sum;
+                auto it = s.lower_bound(run_sum - k);
+                if (it != end(s))
+                    res = max(res, run_sum - *it);
+                s.insert(run_sum);
             }
         }
-        int maxi = -1e9;
-        for(int i = 0; i < n; i++) {
-            for(int j = -1; j < i; j++) {
-                int currSum = 0;
-                set<int> s;
-                for(int l = 0; l < m; l++) {
-                    int sub = 0;
-                    if(j != -1) {
-                        sub = matrix[l][j];
-                    }
-                    currSum += (matrix[l][i] - sub);
-                    if(currSum <= k)
-                        maxi = max(currSum,maxi);
-                    if(s.size() == 0) {
-                        s.insert(currSum);
-                    }
-                    else {
-                        int exact = currSum - k;
-                        auto itr = s.lower_bound(exact);
-                        if(itr != s.end()) {
-                            maxi = max(maxi,currSum - *itr);
-                        }
-                        s.insert(currSum);
-                    }
-                }
-                
-            }
-        }
-        return maxi;
-    } 
+    }
+    return res;
+}
 };
