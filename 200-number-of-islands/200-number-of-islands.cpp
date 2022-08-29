@@ -1,35 +1,33 @@
 class Solution {
 public:
-    void helper(vector<vector<bool>> & taken, vector<vector<char>> & grid, int currx, int curry, int x, int y) {
-        if(currx >= x or curry >= y or currx < 0 or curry < 0)
-            return;
-        
-        if(grid[currx][curry] == '0' or taken[currx][curry] == true) {
+    
+    void recur(vector<vector<char>> &grid, vector<vector<bool>> &taken, int x, int y, int m, int n) {
+        if(x < 0 or y < 0 or x >= m or y >= n) {
             return;
         }
-        
-        taken[currx][curry] = true;
-        
-        helper(taken,grid,currx + 1,curry,x,y);
-        helper(taken,grid,currx,curry + 1,x,y);
-        helper(taken,grid,currx - 1,curry,x,y);
-        helper(taken,grid,currx,curry - 1,x,y);
-
+        if(grid[x][y] != '1' or taken[x][y]) {
+            return;
+        }
+        taken[x][y] = true;
+        recur(grid,taken,x+1,y,m,n);
+        recur(grid,taken,x-1,y,m,n);
+        recur(grid,taken,x,y+1,m,n);
+        recur(grid,taken,x,y-1,m,n);
     }
     
     int numIslands(vector<vector<char>>& grid) {
-        int n = grid.size(), m = grid[0].size();
-        vector<vector<bool>> taken(n, vector<bool> (m,false));
-        
-        int count = 0;
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < m; j++) {
-                if(taken[i][j] == false and grid[i][j] == '1') {
-                    helper(taken,grid,i,j,n,m);
-                    count++;
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<bool>> taken(m,vector<bool>(n));
+        int ans = 0;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(!taken[i][j] and grid[i][j] == '1') {
+                    ans += 1;
+                    recur(grid,taken,i,j,m,n);
                 }
             }
         }
-        return count;
+        return ans;
     }
+    
 };
