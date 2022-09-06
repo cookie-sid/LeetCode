@@ -21,14 +21,13 @@ class Solution:
             return None
         else:
             fast = fast.next
-        firstMeetsAtNode = None
+            
         ds = 0
         df = 2
         while slow.next and fast.next:
             # print(slow)
             # print(fast)
             if slow == fast :
-                firstMeetsAt = slow
                 break
             ds += 1
             df += 2
@@ -49,12 +48,10 @@ class Solution:
         slow = head
         fast = head
         c = 0
-        p = 0
         while c != steps:
             fast = fast.next
             c += 1
         while slow != fast:
-            p += 1
             slow = slow.next
             fast = fast.next
         
