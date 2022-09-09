@@ -1,31 +1,24 @@
 class Solution:
     def numberOfWeakCharacters(self, p: List[List[int]]) -> int:
         p.sort()
+        pmax = p[len(p) - 1][0]
+        maxi = p[len(p) - 1][1]
         n = len(p)
-        # print(p)
-        
-        maxi = None
+        lp = pmax
         ans = 0
-        i = n - 1
-        while i >= 0:
-            # print(i)
-            # print(ans)
-            if i == n - 1:
-                maxi = p[i][1]
-                while i - 1 >= 0 and p[i-1][0] == p[i][0]:
-                    i -= 1
-                
+        newMaxi = -1
+        for i in range(n-2,-1,-1):
+            if p[i][0] == lp:
+                if lp == pmax:
+                    continue
+                else:
+                    ans += 1 if p[i][1] < maxi else 0
+                    newMaxi = max(newMaxi,p[i][1])
             else:
-                maxiThis = p[i][1]
-                ans = (ans + 1) if p[i][1] < maxi else ans
-                while i - 1 >= 0 and p[i-1][0] == p[i][0]:
-                    i -= 1
-                    ans = (ans + 1) if p[i][1] < maxi else ans
-                    maxiThis = max(maxiThis,p[i][1])
-                maxi = max(maxi,maxiThis)
-            
-            i -= 1
-            
+                maxi = max(maxi,newMaxi)
+                ans += 1 if p[i][1] < maxi else 0
+                lp = p[i][0]
+                newMaxi = p[i][1]
                 
         return ans
         
