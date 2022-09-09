@@ -1,24 +1,14 @@
 class Solution:
-    def numberOfWeakCharacters(self, prop: List[List[int]]) -> int:
-        
-        maxiA = -1
-        for p in prop:
-            maxiA = max(maxiA,p[0])
-        
-        maxD = [0]*(maxiA+1)
-        
-        for p in prop:
-            maxD[p[0]] = max(maxD[p[0]],p[1])
-            
-            
-        for i in range(maxiA-1,-1,-1):
-            maxD[i] = max(maxD[i],maxD[i+1])
-            
+    def numberOfWeakCharacters(self, properties: List[List[int]]) -> int:
+        properties.sort(key = lambda x: (-x[0],x[1]))
         ans = 0
-        for p in prop:
-            if p[0] != maxiA and maxD[p[0]+1] > p[1]:
+        curr_max = 0
+
+        print(properties)
+        for attack, defense in properties:
+            if defense < curr_max:
                 ans += 1
-                
-        return ans
+            curr_max = max(curr_max, defense)
             
-                    
+            
+        return ans
