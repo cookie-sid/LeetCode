@@ -23,7 +23,7 @@ class Solution:
                 heappop(speeds)
                 total -= tmpEle[0]
                 total += ele[1]
-                eff = min(ele[0],eff)
+                eff = ele[0]
                 ans = max(total*eff,ans)
                 heappush(speeds,[ele[1],ele[0]])
         
