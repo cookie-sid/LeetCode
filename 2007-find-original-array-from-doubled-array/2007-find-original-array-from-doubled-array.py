@@ -3,34 +3,36 @@ class Solution:
         if(len(changed) % 2 == 1):
             return []
         
-        d = {}
+        changed.sort()
+
+        n = len(changed)
         
-        for num in changed:
-            d[num] = d[num] + 1 if num in d else 1
-            
+        taken = [False]*n
+        double = n - 1
+        single = n - 2
         res = []
-        
-        keys = list(d.keys())
-        keys.sort(reverse = True)
-        for k in keys:
-            if k == 0:
-                for i in range(d[k]//2):
-                    res.append(k)
-                d[k] %= 2
+        while double > -1:
+            if taken[double]:
+               double -= 1
             else:
-                if 2*k in d:
-                    mini = min(d[k],d[2*k])
-                    for i in range(mini):
-                        res.append(k)
-                    d[k] -= mini
-                    d[2 *k] -= mini
+                found = False
+                while single >= double:
+                    single -= 1
+                while single > -1 and changed[single] * 2 != changed[double]:
+                    single -= 1
+                if single == -1:
+                    return []
+                else:
+                    found = True
+                taken[double] = True
+                taken[single] = True
+                res.append(changed[single])
+                single -= 1
+                double -= 1
         
-        for k in d:
-            if d[k] != 0:
-                return []
-            
+        # 1 2 3 4 6 8
         return res
-        
+            
                 
             
         
