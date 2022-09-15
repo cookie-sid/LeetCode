@@ -2,35 +2,36 @@ class Solution:
     def findOriginalArray(self, changed: List[int]) -> List[int]:
         if(len(changed) % 2 == 1):
             return []
+        maxN = 100001
+        count = [0] * maxN
         
-        changed.sort()
-
-        n = len(changed)
-        
-        taken = [False]*n
-        double = n - 1
-        single = n - 2
+        maxi = -1
+        for num in changed:
+            count[num] += 1
+            maxi = max(maxi,num)
+            
+            
         res = []
-        while double > -1:
-            if taken[double]:
-               double -= 1
-            else:
-                found = False
-                while single >= double:
-                    single -= 1
-                while single > -1 and changed[single] * 2 != changed[double]:
-                    single -= 1
-                if single == -1:
-                    return []
-                else:
-                    found = True
-                taken[double] = True
-                taken[single] = True
-                res.append(changed[single])
-                single -= 1
-                double -= 1
+        for num in range(maxi,0,-1):
+            mini = min(count[num],count[num//2])
+            if(count[num] == 0):
+                continue
+            if(num % 2 != 0 and count[num] != 0):
+                return []
+            temp = [num//2]*mini
+            count[num] -= mini
+            count[num//2] -= mini
+            res.extend(temp)
+            if(count[num] != 0):
+                return []
         
-        # 1 2 3 4 6 8
+        if(count[0] % 2 != 0):
+            return []
+        
+        temp = [0] * (count[0]//2)
+        res.extend(temp)
+            
+        
         return res
             
                 
