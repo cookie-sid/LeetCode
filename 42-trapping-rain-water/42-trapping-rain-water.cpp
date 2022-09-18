@@ -1,38 +1,22 @@
 class Solution {
 public:
     int trap(vector<int>& height) {
-        vector<int> maxfromleft(height.size()), maxfromright(height.size());
-        int maxi = -1;
-        for(int i = 0; i < height.size(); i++) {
-            maxfromleft[i] = max(maxi,height[i]);
-            maxi = max(maxi,height[i]);
+        int n = height.size();
+        vector<int> l2r(n), r2l(n);
+        int maxTillNow = height[0];
+        for(int i = 1; i < n; i++) {
+            l2r[i] = maxTillNow;
+            maxTillNow = max(maxTillNow,height[i]);
         }
-        maxi = -1;
-        for(int i = height.size() - 1; i > -1; i--) {
-            maxfromright[i] = max(maxi,height[i]);
-            maxi = max(maxi,height[i]);
-        }
-        vector<int> res(height.size());
-        for(int i = 0; i < height.size(); i++) {
-            if(i == 0 or i == height.size() - 1) {
-                res[i] = height[i];
-            }
-            else {
-                if(maxfromleft[i-1] < height[i]) {
-                    res[i] = height[i];
-                    continue;
-                }
-                if(maxfromright[i+1] < height[i]) {
-                    res[i] = height[i];
-                    continue;
-                }
-                res[i] = min(maxfromleft[i-1],maxfromright[i+1]);
-            }
+        maxTillNow = height[n-1];
+        for(int i = n - 2; i > -1; i--) {
+            r2l[i] = maxTillNow;
+            maxTillNow = max(maxTillNow,height[i]);
         }
         int ans = 0;
-        for(int i = 0; i < res.size(); i++)
-        {
-            ans += abs(height[i] - res[i]);
+        for(int i = 1; i < n - 1; i++) {
+            ans += max(height[i],min(r2l[i],l2r[i])) - height[i];
+            
         }
         return ans;
     }
