@@ -5,8 +5,9 @@ class Solution:
             if num%2 == 0:
                 total += num
         
-        ans = []
-        for q in queries:
+        ans = [0] * len(queries)
+        for i in range(len(queries)):
+            q = queries[i]
             prev = nums[q[1]]
             new = nums[q[1]] + q[0]
             if prev % 2 == 0:
@@ -18,7 +19,7 @@ class Solution:
                 if new%2 == 0:
                     total += new
             
-            ans.append(total)
+            ans[i] = total
             nums[q[1]] += q[0]
             
         return ans
