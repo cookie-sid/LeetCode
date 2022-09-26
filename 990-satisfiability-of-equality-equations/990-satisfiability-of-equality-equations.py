@@ -24,7 +24,6 @@ class Solution:
                             if lsnum[i] == p or lsnum[i] == q:
                                 lsnum[i] = currentNum
                         currentNum += 1
-            print(lsnum)
                         
                     
         for e in equations:
