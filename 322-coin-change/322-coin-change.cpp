@@ -1,27 +1,16 @@
 class Solution {
 public:
     int coinChange(vector<int>& coins, int amount) {
-        vector<vector<int>> dp(coins.size() + 1, vector<int> (amount + 1));
-        int n = coins.size();
-        
+        sort(coins.begin(),coins.end());
+        vector<int> ans(amount+1,1e9);
+        ans[0] = 0;
         for(int i = 1; i <= amount; i++) {
-            dp[0][i] = 1e9;
-        }
-        
-        for(int i = 1; i <= n; i++) {
-            for(int j = 1; j <= amount; j++) {
-                if(coins[i-1] <= j) {
-                    dp[i][j] = min(dp[i-1][j],dp[i][j-coins[i-1]] + 1);
-                }
-                else {
-                    dp[i][j] = dp[i-1][j];
+            for(int j = 0; j < coins.size(); j++) {
+                if(i >= coins[j]) {
+                    ans[i] = min(ans[i],ans[i-coins[j]] + 1);
                 }
             }
         }
-        if(dp[n][amount] == 1e9) {
-            return -1;
-        }
-        return dp[n][amount];
-        
+        return ans[amount] == 1e9 ? -1 : ans[amount];
     }
 };
