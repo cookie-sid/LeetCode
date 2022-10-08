@@ -1,25 +1,24 @@
 class Solution {
 public:
     int threeSumClosest(vector<int>& nums, int target) {
-        
         sort(nums.begin(),nums.end());
-        
-        int ans = -1e9;
+        int ans = nums[0] + nums[1] + nums[2];
         for(int i = 0; i < nums.size() - 2; i++) {
-            int required = target - nums[i];
-            int start = i + 1, end = nums.size() - 1;
-            while(start < end) {
-                if(nums[start] + nums[end] < required) {
-                    if(abs(target - ans) > abs(target - (nums[i] + nums[start] + nums[end]))) {
-                        ans = nums[i] + nums[start] + nums[end];
+            for(int j = i+1; j < nums.size() - 1; j++) {
+                int lb = upper_bound(nums.begin() + j + 1, nums.end(),target-nums[i]-nums[j]) - nums.begin();
+                int that = lb, prev = lb - 1;
+                if(that < nums.size()) {
+                    if(abs(target-ans) > abs(target - nums[i] - nums[j] - nums[that])) {
+                        ans = nums[i] + nums[j] + nums[that];
                     }
-                    start++;
                 }
-                else {
-                    if(abs(target - ans) > abs(target - (nums[i] + nums[start] + nums[end]))) {
-                        ans = nums[i] + nums[start] + nums[end];
+                if(prev > j) {
+                    if(abs(target-ans) > abs(target - nums[i] - nums[j] - nums[prev])) {
+                        ans = nums[i] + nums[j] + nums[prev];
                     }
-                    end--;
+                }
+                if(ans == target) {
+                    return ans;
                 }
             }
         }
