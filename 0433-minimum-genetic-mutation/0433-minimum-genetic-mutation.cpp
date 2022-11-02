@@ -11,14 +11,9 @@ public:
     }
     
     int minMutation(string start, string end, vector<string>& bank) {
-        map<string,int> m;
         map<string,bool> taken;
         for(auto x : bank) {
-            m[x] = 1e9;
             taken[x] = false;
-        }
-        if(m.find(end) == m.end()) {
-            return -1;
         }
         queue<string> q;
         q.push(start);
@@ -27,6 +22,7 @@ public:
             int size = q.size();
             for(int i = 0; i < size; i++) {
                 string top = q.front();
+                taken[top] = true;
                 if(top == end) {
                     return steps;
                 }
