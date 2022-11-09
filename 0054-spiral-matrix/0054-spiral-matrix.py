@@ -15,9 +15,11 @@ class Solution:
             for row in range(top + 1, down + 1):
                 ans.append(L[row][end])
 
-            if not (top == down or start == end):
+            if top != down:
                 for col in range(end - 1, start - 1, -1):
                     ans.append(L[down][col])
+
+            if start != end:
                 for row in range(down - 1, top, -1):
                     ans.append(L[row][start])
 
