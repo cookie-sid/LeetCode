@@ -6,24 +6,22 @@
 #         self.right = right
 class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
+        
         if not root:
             return 0
-        q = [root]
+        
+        maxDepth = 1
         vis = set()
-        vis.add(root)
-        depth = 0
-        while len(q) != 0:
-            s = len(q)
-            for i in range(s):
-                top = q[0]
-                q.pop(0)
-                if top.left and top.left not in vis:
-                    q.append(top.left)
-                    vis.add(top.left)
-                if top.right and top.right not in vis:
-                    q.append(top.right)
-                    vis.add(top.right)
-            depth += 1
-
-        return depth
+        def dfs(root,currDepth):
+            vis.add(root)
+            nonlocal maxDepth
+            maxDepth = max(maxDepth,currDepth)
+            if root.left and root.left not in vis:
+                dfs(root.left,currDepth+1)
+            if root.right and root.right not in vis:
+                dfs(root.right,currDepth+1)
+        
+        dfs(root,1)
+            
+        return maxDepth
         
